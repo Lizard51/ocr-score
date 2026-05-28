@@ -88,19 +88,19 @@ def upload_file():
         ocr_score = calculate_ocr_score(contrast, sharpness)
         explanation = generate_explanation(contrast, sharpness, ocr_score)
         
-        # Сохранение результатов в БД
+        # Сохранение результатов в БД (храним только имя файла, без папки)
         db = get_db()
         db.execute(
             '''INSERT INTO analysis_results (filename, image_path, contrast, sharpness, ocr_score, explanation)
                VALUES (?, ?, ?, ?, ?, ?)''',
-            (filename, image_path, contrast, sharpness, ocr_score, explanation)
+            (filename, unique_filename, contrast, sharpness, ocr_score, explanation)
         )
         db.commit()
         
         return render_template('index.html', 
                                result={
                                    'filename': filename,
-                                   'image_path': image_path,
+                                   'image_path': unique_filename,
                                    'contrast': contrast,
                                    'sharpness': sharpness,
                                    'ocr_score': ocr_score,
