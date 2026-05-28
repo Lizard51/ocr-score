@@ -133,7 +133,7 @@
                         {% for result in results %}
                         <tr>
                             <td>
-                                <img src="/{{ result.image_path }}" alt="Preview" class="thumbnail-img">
+                                <img src="{{ url_for('serve_image', filename=result.image_path) }}" alt="Preview" class="thumbnail-img">
                             </td>
                             <td>
                                 <strong>{{ result.filename }}</strong>

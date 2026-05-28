@@ -1,7 +1,7 @@
 import os
 import sqlite3
 from datetime import datetime
-from flask import Flask, render_template, request, redirect, url_for, g
+from flask import Flask, render_template, request, redirect, url_for, g, send_from_directory
 from werkzeug.utils import secure_filename
 from utils.image_analysis import analyze_image, calculate_ocr_score
 
@@ -166,6 +166,12 @@ def delete_result(id):
     db.execute('DELETE FROM analysis_results WHERE id = ?', (id,))
     db.commit()
     return redirect(url_for('history'))
+
+
+@app.route('/uploads/<path:filename>')
+def serve_image(filename):
+    """Отдача изображений из папки uploads."""
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 
 if __name__ == '__main__':
